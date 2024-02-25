@@ -1,19 +1,23 @@
 <div class="container">
-<h1><%= @list.name %></h1>
-<div class="d-inline-flex justify-content-evenly">
-  <% @list.movies.each do |movie| %>
-    <% bookmark = Bookmark.find_by(movie_id: movie.id, list_id: @list.id) %>
-    <div class="card" style="width: 18rem;">
-      <img class="card-img-top" src=<%= movie.poster_url %> alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title"><%= movie.title %></h5>
-        <p class="card-text"><%= movie.overview %></p>
-        <%= link_to bookmark_path(bookmark), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "btn btn-danger btn-sm" do%>
-          <i class="fa-regular fa-trash-can"></i>
-        <% end %>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><%= @list.name %></h1>
+    <%= link_to "Add a Movie", new_list_bookmark_path(@list), class: "btn btn-primary" %>
+  </div>
+  <div class="row">
+    <% @list.movies.each do |movie| %>
+      <% bookmark = Bookmark.find_by(movie_id: movie.id, list_id: @list.id) %>
+      <div class="col-md-4 mb-4">
+        <div class="card" style="width: 100%;">
+          <%= image_tag(movie.poster_url, alt: movie.title, class: "card-img-top") %>
+          <div class="card-body">
+            <h5 class="card-title"><%= movie.title %></h5>
+            <p class="card-text"><%= movie.overview %></p>
+            <%= link_to bookmark_path(bookmark), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "btn btn-danger btn-sm" do %>
+              <i class="fa fa-trash"></i> Remove
+            <% end %>
+          </div>
+        </div>
       </div>
-    </div>
-  <% end %>
-</div>
-<%= link_to "Add a Movie", new_list_bookmark_path(@list), class: "btn btn-primary" %>
+    <% end %>
+  </div>
 </div>
